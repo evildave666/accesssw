@@ -1,0 +1,16 @@
+--- 
+- name: Add access switch network configuration
+  nclu:
+    commands:
+      - add bond peerlink bond slaves {{ peerlinkports }}
+      - add int peerlink.{{ peerlinkvlan }} ip address {{ peerlinkipaddr }}
+      - add int peerlink.{{ peerlinkvlan }} clag backup-ip {{ partneroobaddr }} vrf mgmt
+      - add int peerlink.{{ peerlinkvlan }} clag enable yes
+      - add int peerlink.{{ peerlinkvlan }} clag peer-ip {{ partneribaddr }}
+      - add int peerlink.{{ peerlinkvlan }} clag sys-mac {{ peerlinkmac }}
+      - add bond uplink bond slaves {{ uplinkports }}
+      - add bond uplink clag id {{ uplinkclag }}
+      - add bridge bridge ports peerlink,uplink
+      - add bridge bridge pvid 1
+      - add bridge bridge vids 201-245,251-295
+      - add bridge bridge vlan-aware
